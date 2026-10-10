@@ -36,6 +36,20 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ message: 'Not found' }))
 })
 
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`Mock license server could not bind 127.0.0.1:${port}: address already in use`)
+        console.error('Stop the process holding the port, or set MOCK_LICENSE_PORT to a free port.')
+    } else {
+        console.error(`Mock license server failed to start: ${err.message}`)
+    }
+    process.exit(1)
+})
+
+for (const signal of ['SIGINT', 'SIGTERM']) {
+    process.on(signal, () => server.close(() => process.exit(0)))
+}
+
 server.listen(port, '127.0.0.1', () => {
     console.log(`Mock license API listening on http://127.0.0.1:${port}`)
     console.log('Enter a license key starting with "dev" in the activate window')
