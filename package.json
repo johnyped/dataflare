@@ -3,6 +3,8 @@
     "scripts": {
         "dev": "tauri dev --no-watch",
         "dev:web": "vite dev",
+        "dev:mock-license": "node scripts/mock-license.mjs",
+        "dev:mock": "bash scripts/dev-mock.sh",
         "build": "tauri build",
         "build:debug": "tauri build --debug",
         "build:web": "tsc && vite build",

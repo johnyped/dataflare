@@ -30,7 +30,7 @@ export const LicenseStorage = {
 }
 
 export class LicenseApi {
-    private static baseURL = 'https://api.dataflare.app'
+    private static baseURL = import.meta.env.VITE_LICENSE_API_URL ?? 'https://api.dataflare.app'
 
     private static send<T>(data: {
         method: 'GET' | 'POST'
