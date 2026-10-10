@@ -31,7 +31,13 @@ This wraps `scripts/dev-mock.sh`:
    source "$HOME/.cargo/env"   # or open a new terminal
    ```
 
-2. **Node + pnpm** — the project prefers Node 26; older versions work but print an engine warning. If `pnpm` is not on PATH, the script falls back to `corepack pnpm`.
+2. **Node + pnpm** — the project prefers Node 26; older versions work but print an engine warning. Install pnpm once (Node 25+ no longer bundles corepack):
+
+   ```bash
+   npm install -g pnpm   # or: brew install pnpm
+   ```
+
+   If `pnpm` is not on PATH, the script falls back to `corepack pnpm` — but only when corepack exists; otherwise it exits with the install command above. Missing `node_modules` are installed automatically.
 
 3. **Working macOS toolchain** — `aws-lc-sys` compiles C at build time. If you see `ld: tapi error: malformed file ... .tbd: unknown architecture`, the script automatically falls back to a working Xcode SDK. Permanent fix: `sudo rm -rf /Library/Developer/CommandLineTools && xcode-select --install`.
 

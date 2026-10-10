@@ -13,9 +13,19 @@ if ! command -v cargo >/dev/null 2>&1; then
 fi
 
 if ! command -v pnpm >/dev/null 2>&1; then
-    PNPM="corepack pnpm"
+    if command -v corepack >/dev/null 2>&1; then
+        PNPM="corepack pnpm"
+    else
+        echo "Neither pnpm nor corepack is available. Install pnpm:" >&2
+        echo "  npm install -g pnpm   # or: brew install pnpm" >&2
+        exit 1
+    fi
 else
     PNPM="pnpm"
+fi
+
+if [ ! -d node_modules ]; then
+    $PNPM install
 fi
 
 probe=$(mktemp -d)

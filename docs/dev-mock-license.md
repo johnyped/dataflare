@@ -28,7 +28,11 @@ The frontend reads the API base URL from `VITE_LICENSE_API_URL` (`src-web/utils/
 
    (Add `source "$HOME/.cargo/env"` to `~/.zshrc` to make it permanent.)
 
-2. **Node + pnpm** — the project prefers Node 26; older versions work but print an engine warning.
+2. **Node + pnpm** — the project prefers Node 26; older versions work but print an engine warning. Install pnpm once (Node 25+ no longer bundles corepack):
+
+   ```bash
+   npm install -g pnpm   # or: brew install pnpm
+   ```
 
 3. **Working macOS toolchain** — `aws-lc-sys` compiles C and links test binaries at build time. If you see `ld: tapi error: malformed file ... .tbd: unknown architecture`, your default SDK is corrupt. `pnpm dev:mock` detects this and automatically falls back to a working Xcode SDK; the permanent fix is reinstalling Command Line Tools (`sudo rm -rf /Library/Developer/CommandLineTools && xcode-select --install`).
 
@@ -75,4 +79,5 @@ To reset, delete the keychain entry `license` or deactivate in the app.
 
 - `pnpm dev` runs `tauri dev --no-watch` — restart the script after Rust or frontend changes that don't hot-reload.
 - The first run compiles the Rust workspace and can take several minutes.
-- If `pnpm` is not on PATH, the scripts fall back to `corepack pnpm`.
+- If `pnpm` is not on PATH, `scripts/dev-mock.sh` falls back to `corepack pnpm`; when corepack is unavailable (Node 25+), it exits with a message telling you to install pnpm.
+- If `node_modules` is missing, `scripts/dev-mock.sh` runs `pnpm install` automatically before starting.
